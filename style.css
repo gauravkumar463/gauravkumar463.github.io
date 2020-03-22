@@ -73,18 +73,14 @@ body{
     padding:1rem;
 }
 
+img{
+    height: auto;
+}
+
 /* media queres */
 @media(max-width:780px){
-    .grid-2{
-        grid-template-columns: 1fr;
-    }
-    .section-1{
-        padding:0;
-        padding-top: 5rem;
-    }
-    .section-2{
-        padding: 0;
-        padding-left: 1.5rem;
-        padding-top: 2rem;
+    .header{
+        padding-left: 5%;
+        padding-right: 5%; 
     }
 }
