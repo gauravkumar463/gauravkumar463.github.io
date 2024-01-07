@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Personal Homepage</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+            display: flex;
+        }
+
+        #left-column {
+            background-color: #007bff;
+            padding: 2em;
+            text-align: center;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 25%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #left-column img {
+            max-width: 300px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        #right-column {
+            margin-left: 30%;
+            margin-top: 5%;
+            max-width: 60%;
+/*            margin: 2em auto;*/
+            padding: 1em;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin: 0 1em;
+            padding: 0.5em 1em;
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .social-buttons a:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #007bff;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="left-column">
+        <img src="profile.jpg" alt="Your Photo">
+        <p style='font-size: 2em;'>Gaurav Kumar</p>
+    </div>
+
+    <div id="right-column">
+        <h2>About Me</h2>
+        <p>
+            Hello! I'm Gaurav Kumar, an Engineer with a specialization in Computational Fluid Dynamics (CFD) and Data Science. I have developed a compressible flow solver in OpenFOAM (code can be found on my <a href="https://github.com/gauravkumar463/rhoLDFSSFoam">here </a>) which is stable, accurate, and fast. Presently I am working on solution/data driven methods to accelerate the tradition CFD tools. One of my current research interest is developing a <i>predictive adaptive mesh refinement</i> technique which can identify the grid points for successive refinement at the next time step (not present time step as done in all the CFD solvers with AMR) improving the efficiency and accuracy of the simulation. This technique is also fully automated to resolve maximum physical flow interactions and require no arbitrary user input. My broader research interests include high-speed flows, aeroacoustics and acceleration of general multiphysics simulations.
+        </p>
+        <p>
+            I hold a B.Tech M.Tech Dual degree (2011-2016) and Ph.D. (2016-2021) from the Indian Institute of Technology (IIT) Kanpur. Following my doctoral studies, I spent two enriching years as a Postdoctoral Researcher at the Indian Institute of Science (IISc) Bangalore from 2021 to 2023. My research during this period focused on combining experiments and numerical simulations to understand aeroacoustics in high speed flow with large separation bubble. Currently, I am continuing my academic journey as a Postdoctoral Researcher at the University of Nevada, Reno, since March 2023. Here, I am engaged in cutting-edge research on accelerating traditional computational tools (which are mathematically rigourous but not fast) with data-driven techniques (which are fast but lack mathematical understanding in many areas).
+        </p>
+        <p>
+            With a passion for advancing scientific knowledge and solving complex problems, I strive to make meaningful contributions to the intersection of computational science and data science. My journey in academia has been marked by dedication, curiosity, and a commitment to pushing the boundaries of knowledge.
+        </p>
+        <p>
+            Thank you for visiting my personal homepage, where I share insights into my academic and professional journey. Feel free to explore my research, and don't hesitate to reach out to me if you have any questions or collaborative opportunities.
+        </p>
+
+
+
+        <!-- More content can go here, and it will be scrollable in the right column -->
+
+        <h2>Contact Me</h2>
+        <p>
+            Feel free to reach out to me via email at <a href="mailto:gauravkumar463@gmail.com">gauravkumar463@gmail.com</a>.
+            You can also connect with me on social media.
+        </p>
+        <div class="social-buttons">
+            <a href="https://www.linkedin.com/in/gauravkr463" target="_blank">LinkedIn</a>
+            <a href="https://github.com/gauravkumar463" target="_blank">GitHub</a>
+            <a href="https://scholar.google.co.in/citations?user=CGKSHlUAAAAJ&hl=en" target="_blank">Google Scholar</a>
+        </div>
+    </div>
+
+<!--     <footer>
+        &copy; 2024 Your Name | Designed with ❤️
+    </footer> -->
+</body>
+</html>
