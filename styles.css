@@ -1,0 +1,89 @@
+<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #495057;
+            display: flex;
+        }
+
+        #left-column {
+            background-color: #007bff;
+            padding: 2em;
+            text-align: center;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 25%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #left-column img {
+            max-width: 300px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        #right-column {
+            margin-left: 30%;
+            margin-top: 1%;
+            max-width: 60%;
+/*            margin: 2em auto;*/
+            padding: 1em;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        p {
+            line-height: 1.4;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1em;
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin: 0 1em;
+            padding: 0.5em 1em;
+            text-decoration: none;
+            color: #fff;
+            background-color: #28a745;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .social-buttons a:hover {
+            background-color: #218838;
+        }
+
+        #left-column a{
+            text-decoration: none;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #007bff;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
