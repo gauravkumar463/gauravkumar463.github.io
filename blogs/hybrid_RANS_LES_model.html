@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=0.9*device-width, initial-scale=1.0">
+    <title>Smarter Grids, Faster Flows: Dominant Balance AMR</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 10%;
+            justify-content: center;
+            max-width: 75%; /* Reduced width for better readability */
+        }
+    </style>
+</head>
+<body>
+
+    <h1><strike>Solving</strike> Managing the Turbulence Problem: My Journey into Hybrid RANS-LES Modeling</h1>
+
+    <p>Turbulence is often called the last great unsolved problem in classical physics. For engineers and researchers, the challenge isn't just understanding it &mdash; it's about <strong>simulating</strong> it without breaking the bank. My <strong>undergraduate</strong> and <strong>masters</strong> research focused on finding that middle path of flow simulations: <strong>Hybrid RANS-LES modeling</strong>.</p>
+
+    <hr>
+
+    <h2>The Problem: Precision vs. Price Tag</h2>
+    <p>When we simulate fluid flow, we usually have two traditional choices. On one hand, <strong>Direct Numerical Simulation (DNS)</strong> or <strong>Large Eddy Simulation (LES)</strong> are incredibly accurate but so computationally expensive that it's often impossible for real-world engineering problems (consider simulating wind changes over a city of size 100km x 100km x 500m where buildings can be of meters scale and the atmospheric boundary layer can have featurs of centimeter-scale). On the other hand, <strong>Reynolds-Averaged Navier-Stokes (RANS)</strong> models are fast but often fail to accurately predict complex, massively separated flows (consider forces experienced by building that depend on accurate modelling of flow separation behind them).</p>
+
+    <p>My work explored <strong>Hybrid RANS-LES methods</strong>, which aims to provide the best of both worlds:</p>
+    <ul>
+        <li><strong>Near-wall region:</strong> We use RANS to keep computational costs low.</li>
+        <li><strong>Off-body region:</strong> We switch to Large Eddy Simulation (LES) to capture the complex, unsteady flow structures with high accuracy.</li>
+    </ul>
+
+    <p>At <a href="https://en.wikipedia.org/wiki/Reynolds_number">Reynolds numbers</a> of 1 million, these hybrid methods can reduce the cost of a pure LES simulation by 100 times. That's the difference between a simulation taking a weekend versus taking several months.</p>
+
+
+    <h2>The Secret Sauce: Non-Linear Closures</h2>
+    <p>A major focus of my research published in the article "<a href="https://doi.org/10.1002/fld.4334">Investigation of the sensitivity of turbulent closures and coupling of hybrid RANS-LES models for predicting flow fields with separation and reattachment</a>" is the sensitivity of these models to how they are "coupled" and the effect of changes in grid resolution across the simulation domain.</p>
+
+    <p>Traditional <strong>Linear Eddy-Viscosity Models (LEVM)</strong> often struggle at the RANS-LES interface, incorrectly predicting the anisotropy of Reynolds stresses. There are also problems called <strong>modeled stress depletion</strong> and <strong>grid induced separation</strong> in the simulated flow. My research proposed a <strong> generic non-linear blended framework</strong> to fix these issues.</p>
+
+    <h3>Key Findings on Model Performance</h3>
+    <table border="1" style="width:100%; text-align:center; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Linear Hybrid Models</th>
+                <th>Non-Linear Hybrid Models</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Grid Sensitivity</strong></td>
+                <td>Highly sensitive; results can deteriorate on coarse grids.</td>
+                <td>Less sensitive; more robust across different resolutions.</td>
+            </tr>
+            <tr>
+                <td><strong>Prediction Accuracy</strong></td>
+                <td>Can struggle with separation/reattachment points.</td>
+                <td>Significant improvement in mean and instantaneous flow fields.</td>
+            </tr>
+            <tr>
+                <td><strong>Flow Dynamics</strong></td>
+                <td>Under-predicts energy in higher modes.</td>
+                <td>Better captures energy distribution and backscattering.</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Visualizing Energy: POD Analysis</h2>
+    <p>It's not enough to just get the "mean" flow right; we need to know if the <em>physics</em> of the energy transfer is correct. In my another article in 2017 "<a href="https://doi.org/10.1108/HFF-03-2016-0134">Investigation of flow structures in a turbulent separating flow using hybrid RANS-LES mode</a>", I utilized <strong>Proper Orthogonal Decomposition (POD)</strong> to resolve unsteady flow structures.</p>
+
+    <p>Using POD, I demonstrated that our non-linear model (NBSST) was able to predict an energy distribution very similar to highly resolved LES, even when using a significantly coarser grid. This proves that we can achieve high-fidelity results without the "high-fidelity" price tag.</p>
+
+    <h2>Pushing the Limits: High Reynolds Numbers</h2>
+    <p>Can these models handle the stress of high Reynolds number applications? I tested the <strong>NSST-Blended model (NBSST)</strong> at Reynolds numbers up to 100,000. Even on relatively coarse grids, the model provided qualitatively accurate trends that matched experimental observations, showing that the separation past a hill crest increases as the Reynolds number goes up.</p>
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; margin-left: 10%;">
+        <div style="font-size: 1.3em; font-weight: bold; max-width: 40%; line-height: 1.4;">
+            Periodic Hills:<br>Comparison of hybrid RANS-LES simulation (NBSST) with high-fidelity LES (dynamic 1-equation eddy model) simulations. G2 has 3 times finer wall refinement than G3. More details can be found in the reference article.
+        </div>
+        <img src="../images/periodic_hills.png" alt="Periodic Hills simulations" style="width:40%; border-radius: 8px;">
+    </div>
+
+    <h2>Breaking Barriers: Predicting Transition at Low Reynolds Numbers</h2>
+    <p>While hybrid methods excel at high Reynolds numbers, another collaborative work published in "<a href="https://doi.org/10.1007/s12206-019-0419-6">Prediction of separation induced transition on thick airfoil using non-linear URANS based turbulence model</a>" addresses a different challenge: <strong>Separation-Induced Transition</strong> at lower Reynolds numbers.</p>
+    
+    <p>By applying a <strong>Non-linear URANS model</strong> to a thick NACA 0021 airfoil, we achieved a breakthrough in predicting the <strong>Laminar Separation Bubble (LSB)</strong>. Where standard models like Spalart-Allmaras failed to detect the bubble at all, our non-linear approach matched the accuracy of specialized transition models while being computationally efficient.</p>
+
+    <div style=" align-items: center; gap: 20px; margin-bottom: 20px; margin-left: 5%;">
+        <img src="../images/NACA0021_0deg.png" alt="NACA 0021 Airfoil simulations (0 deg)" style="width:30%; border-radius: 8px;">
+        <img src="../images/NACA0021_5deg.png" alt="NACA 0021 Airfoil simulations (5 deg)" style="width:30%; border-radius: 8px;">
+        <img src="../images/NACA0021_10deg.png" alt="NACA 0021 Airfoil simulations (10 deg)" style="width:30%; border-radius: 8px;">
+        <div style="font-size: 1.3em; font-weight: bold; max-width: 100%; line-height: 1.4;">
+            Comparison of Non-linear k-&omega; SST URANS simulation (NSST) with k-kl-omega transition URANS simulations. The NSST model successfully captures the laminar separation bubble (LSB) at 0, 5, and 10 degrees angle of attack, while the Spalart-Allmaras (SA) and linear k-&omega; SST model fail to predict it. More details can be found in the reference article.
+        </div>
+    </div>
+
+    <h2>Final Takeaways</h2>
+    <p>After testing across various scenarios&mdash;from periodic hills to bluff bodies like square and rounded cylinders&mdash;the conclusions are clear:</p>
+    <ul>
+        <li><strong>Two-equation models</strong> (like SST) generally outperform one-equation models in complex separated flows.</li>
+        <li><strong>Non-linear closures</strong> are essential for reducing grid dependency and improving the "seamless" transition between RANS and LES.</li>
+        <li>The <strong>NSST-Blended</strong> and <strong>NSST-DDES</strong> models emerged as the top performers and are recommended for future complex flow simulations.</li>
+    </ul>
+
+    <p>Computational fluid dynamics is a game of trade-offs, but with the right hybrid approach, we're getting closer than ever to a perfect balance of speed and accuracy.</p>
+
+    <div class="ref-section">
+        <h3>Scientific Publications</h3>
+        <p>For a deep dive into the data and methodology, you can explore my published work:</p>
+        <ul>
+            <li>Mishra, A., <strong>Kumar, G.</strong>, & De, A. (2019). Prediction of separation induced transition on thick airfoil using non-linear URANS based turbulence model. <em>ournal of Mechanical Science and Technology, 33(5), 2169-2180</em>. <a href="https://doi.org/10.1007/s12206-019-0419-6">DOI: 10.1007/s12206-019-0419-6</a></li>
+            <li><strong>Kumar, G.</strong>, Lakshmanan, S. K., Gopalan, H., & De, A. (2017). Investigation of the sensitivity of turbulent closures and coupling of hybrid RANS‐LES models for predicting flow fields with separation and reattachment. <em>International Journal for Numerical Methods in Fluids, 83(12), 917-939</em>. <a href="https://doi.org/10.1002/fld.4334">DOI: 10.1002/fld.4334</a></li>
+            <li><strong>Kumar, G.</strong>, De, A., & Gopalan, H. (2017). Investigation of flow structures in a turbulent separating flow using hybrid RANS-LES model. <em>International Journal of Numerical Methods for Heat & Fluid Flow, 27(7), 1430-1450</em>. <a href="https://doi.org/10.1108/HFF-03-2016-0134">DOI: 10.1108/HFF-03-2016-0134</a></li>
+            <li><strong>Kumar, G.</strong>, Lakshmanan, S. K., Gopalan, H., & De, A. (2016). Comparative study of hybrid RANS-LES models for separated flows. In <em>AIP Conference Proceedings (Vol. 1738, No. 1, p. 030014)</em>.</li>
+            <li><strong>Kumar, G.</strong>, Gopalan, H., Chandar, D., Nguyen, V. T., & De, A. (2016). Verification of Length Scale Effects on Solution Accuracy of Hybrid RANS-LES Methods. In <em>International Conference on Offshore Mechanics and Arctic Engineering (Vol. 49934, p. V002T08A002). American Society of Mechanical Engineers.</em>. <a href="https://doi.org/10.1115/OMAE2016-54008">DOI: 10.1115/OMAE2016-54008</a></li>
+        </ul>
+    </div>
+
+    <hr>
+
+</body>
+<footer> If you are interested, you can reach out to me at <a href="mailto:gauravkumar463@gmail.com" style="color: #0066cc; text-decoration: none;">gauravkumar463@gmail.com</a> for a copy of the article or to share your comment.</footer>
+</html>

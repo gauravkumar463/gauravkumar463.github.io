@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=0.9*device-width, initial-scale=1.0">
+    <title>Smarter Grids, Faster Flows: Dominant Balance AMR</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 10%;
+            justify-content: center;
+            max-width: 75%; /* Reduced width for better readability */
+        }
+    </style>
+</head>
+<body>
+
+  <h1>Understanding Hypersonic Flow: Advances in OpenFOAM Solvers for Separated Flow Aero-thermodynamics</h1>
+    
+    <p>Designing the next generation of hypersonic aircraft &mdash; like <a href="https://www.af.mil/About-Us/Fact-Sheets/Display/Article/104467/x-51a-waverider" target="_blank">Boeing's experimental X-51A Waverider</a> &mdash; is an exercise in managing extremes. At Mach 5 and beyond, the air flow creates shock-waves, separates at control surfaces, and generates thermal loads that can compromise structural integrity. My <strong> PhD research </strong> focused on the intersection of <strong>complex physics analysis</strong> and <strong>high-performance algorithm development</strong> to predict these phenomena for practical applications.</p>
+
+    <h2>The Physics Challenge: The Double Wedge "Laboratory"</h2>
+    <p>In hypersonic research, the <strong>double wedge configuration</strong> is our primary tool for understanding the "shock-shock" interactions that occur near control surfaces and fuselage junctions. Through extensive numerical investigations, I have decoded the intricate unsteadiness of these flows, identifying three distinct design parameter regimes that dictate type of flow instability:</p>
+    
+    <ul>
+        <li><strong>Oscillation Mode:</strong> Where the internal shock structures shift dynamically while the leading edge remains anchored.</li>
+        <li><strong>Pulsation Mode:</strong> The most violent state, characterized by a rapid, cyclical "switching" of the entire flow envelope.</li>
+        <li><strong>Vibration Mode:</strong> A quasi-steady state with high-frequency, low-amplitude shock jitter.</li>
+    </ul>
+
+    <div class="highlight-box">
+        <strong>Insight from the Data:</strong> My research demonstrated that these modes aren't random; they are precisely driven by the aft-wedge angle and wedge length ratio. By manipulating the incidence shock position relative to the expansion corner, we can maintain steady flow even at extreme angles.
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; margin-left: 0%;">
+        <div style="font-size: 1.3em; font-weight: bold; max-width: 30%; line-height: 1.4; margin-right: 10%;">
+            A numerical schlieren visualization of shock waves and separation region at L1/L2 = 1.5 and &theta;2 = 50 (a) t = 8 ms, (b) t = 9 ms, (c) t = 9.5 ms, and (d) t = 10.25 ms. Watch animation at <a href="http://dx.doi.org/10.1063/5.0040514.3" target="_blank">http://dx.doi.org/10.1063/5.0040514.3</a>. More details can be found in the reference article.
+        </div>
+        <img src="../images/double_wedge.png" alt="Double Wedge simulations" style="width:60%; border-radius: 8px;">
+    </div>
+
+    <h2>The Engineering Breakthrough: Re-architecting <code>rhoCentralFoam</code></h2>
+    <p>Standard Computational Fluid Dynamics (CFD) tools often break down under these extreme conditions. The popular OpenFOAM solver, <code>rhoCentralFoam</code>, traditionally struggles with numerical stability at high Courant-Friedrichs-Lewy (CFL) numbers due to its sequential integration of conservation equations.</p>
+    
+    <p>To bridge this gap, I developed an <strong>improved density-based compressible flow solver</strong>. This involved deep-level C++ programming and a reimagining of the numerical architecture:</p>
+
+    <div class="tech-stack">
+        <h4>Algorithmic Innovation Stack</h4>
+        <ul>
+            <li><strong>Mathematical Optimization:</strong> I derived and implemented an <strong>analytical inverse of the Jacobian matrix</strong>. This allows for an exact transformation from conservative to primitive variables, eliminating the "lag" in the energy-momentum coupling.</li>
+            <li><strong>Advanced Time-Stepping:</strong> Implemented a <strong>third-order TVD Runge-Kutta</strong> scheme, allowing the solver to remain stable at CFL &approx; 1.0. This drastically reduces computational time without sacrificing precision.</li>
+            <li><strong>High-Resolution Flux Splitting:</strong> Implemented Low-Diffusion Flux Splitting Scheme (LDFSS) specifically tuned to capture sharp shock waves with minimal numerical "smearing."</li>
+        </ul>
+    </div>
+
+    <h3>Proven Performance Across Regimes</h3>
+    <p>A solver is only as good as its validation. By applying this algorithm to a diverse suite of test cases, I demonstrated its versatility:</p>
+    <ul>
+        <li><strong>Subsonic Aerodynamics:</strong> Accurately predicted lift and pressure coefficients for <strong>NACA0012 airfoils</strong> in complex pitching motions.</li>
+        <li><strong>Shock Accuracy:</strong> Eliminated the spurious oscillations typically found in 1D shock tube problems.</li>
+        <li><strong>Complex Structures:</strong> Captured the elusive Mach stem locations in supersonic jets with unprecedented clarity.</li>
+    </ul>
+    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px; margin-left: 0%;">
+        <div style="font-size: 1.3em; font-weight: bold; max-width: 30%; line-height: 1.4; margin-right: 10%;">
+            The comparison of numerical diffusion between Kurganov and LDFSS schemes is made by spanwise vorticity comparison from numerical solution as shown bellow. LDFSS has significantly less diffusion than Kurganov scheme. Try out the code from <a href="https://github.com/gauravkumar463/rhoLDFSSFoam.git" target="_blank">https://github.com/gauravkumar463/rhoLDFSSFoam.git</a>. More details can be found in the reference article.
+        </div>
+        <img src="../images/rhoLDFSSFoam.png" alt="Double Wedge simulations" style="width:60%; border-radius: 8px;">
+    </div>
+
+    <h2>Conclusion: One step closer to flight-ready hypersonic systems</h2>
+    <p>By combining deep physical intuition regarding corner flow separation with custom-coded numerical frameworks, we are moving closer to simulating flight-ready hypersonic systems. My research brings us a step closer to designing aircraft of tomorrow that can survive the heat and pressure of the hypersonic regime.</p>
+
+    <div class="ref-section">
+        <h3>Scientific Publications</h3>
+        <p>For a deep dive into the data and methodology, you can explore my published work:</p>
+        <ul>
+            <li><strong>Kumar, G., & De, A. (2021).</strong> Role of corner flow separation in unsteady dynamics of hypersonic flow over a double wedge geometry. <em>Physics of Fluids</em>. <a href="https://doi.org/10.1063/5.0040514">DOI: 10.1063/5.0040514</a></li>
+            <li><strong>Kumar, G., & De, A. (2021).</strong> Modes of unsteadiness in shock wave and separation region interaction in hypersonic flow over a double wedge geometry. <em>Physics of Fluids</em>. <a href="https://doi.org/10.1063/5.0053949">DOI: 10.1063/5.0053949</a></li>
+            <li><strong>Kumar, G., & De, A. (2022).</strong> An Improved Density-Based Compressible Flow Solver in OpenFOAM for Unsteady Flow Calculations. <em>Springer Aerospace</em>. <a href="https://link.springer.com/chapter/10.1007/978-981-19-1438-6_2">Chapter Link</a></li>
+
+        </ul>
+    </div>
+    <hr>
+
+</body>
+<footer> If you are interested, you can reach out to me at <a href="mailto:gauravkumar463@gmail.com" style="color: #0066cc; text-decoration: none;">gauravkumar463@gmail.com</a> for a copy of the article or to share your comment.</footer>
+</html>

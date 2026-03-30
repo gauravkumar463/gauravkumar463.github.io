@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=0.9*device-width, initial-scale=1.0">
+    <title>Smarter Grids, Faster Flows: Dominant Balance AMR</title>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 10%;
+            justify-content: center;
+            max-width: 75%; /* Reduced width for better readability */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Smarter Grids, Faster Flows: Automating Adaptive mesh refinement (AMR) with Dominant Balance Analysis</h1>
+    </header>
+
+    <hr>
+
+    <section>
+        <h2>The Computational Ceiling</h2>
+        <p>Numerical simulations have revolutionized everything from aircraft design to planning our cities. However, as our problems get more complex, they consistently outpace the improvements in supercomputing speed and resources. For example, in the world of <strong>Computational Fluid Dynamics (CFD)</strong>, the number of grid points needed to resolve a turbulent boundary layer can grow as fast as (<a href="https://en.wikipedia.org/wiki/Reynolds_number">Reynolds numbers</a>)<sup>^1.86 &ndash; 2.05</sup>. To bridge this gap, we don't just need bigger computers; we also need more efficient CFD tools.</p>
+        
+        <p>Traditionally, <strong>Adaptive Mesh Refinement (AMR)</strong> has been the go-to solution for saving resources by only placing high-resolution grid cells where the "action" is. But there's a catch: most AMR strategies rely on <strong>heuristics</strong> &mdash; human guesses like "vorticity thresholds" &mdash; to decide where to refine the grid. If your threshold is arbitrary, your simulation is likely suboptimal and requires user's expertise (more of the judgement based on prior experiences &#9786;).</p>
+    </section>
+
+    <section>
+        <h2>The Innovation: Letting the Physics Decide</h2>
+        <p>In our paper, <a href="https://doi.org/10.1016/j.jcp.2025.114522">Dominant balance-based adaptive mesh refinement for incompressible fluid flows</a>, we introduce a method that removes the guesswork. Instead of relying on user-defined sensors (like vorticity magnitude), we use <strong>Dominant Balance Analysis (DBA)</strong> to identify regions of high physical interaction. DBA has been first introduced by Callaham et al. in <a href="https://doi.org/10.1038/s41467-021-21331-z"> Learning dominant physical processes with data-driven balance models</a>.</p>
+
+        <h3>How it Works:</h3>
+        <ul>
+            <li><strong>Equation Space Exploration:</strong> We evaluate the individual terms of the Navier-Stokes equations (convection, diffusion, pressure, etc.) at every grid cell.</li>
+            <li><strong>Gaussian Mixture Models (GMM):</strong> We use an unsupervised machine learning tool (GMM) to classify these cells into <strong>active</strong> and <strong>passive</strong> regions based on how these terms interact.</li>
+            <li><strong>Probabilistic Error Modeling:</strong> By treating truncation error statistically, we identify where the numerical accuracy is most sensitive to resolution.</li>
+        </ul>
+        
+        <blockquote>
+            "Unlike traditional AMR strategies, this approach does not rely on heuristic-based sensors or user-defined thresholds, providing a fully automated and problem-independent framework."
+        </blockquote>
+    </section>
+
+    <section>
+        <h2>Results: 70% Less Computing, Same Accuracy</h2>
+        <p>We put our DBA-based AMR to the test using 2D and 3D simulations of flow past a cylinder. The results were significant. By focusing computational power only on "active" clusters (like the turbulent wake), we achieved accuracy comparable to high-resolution grids while reducing the total cell count by up to <strong>70%</strong>.</p>
+
+        <h3>Key Performance Metrics:</h3>
+        <table border="1" style="width:100%; text-align:center; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #f2f2f2;">
+                    <th>Method</th>
+                    <th>Grid Cell Efficiency</th>
+                    <th>User Input Required?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Uniform Refinement</td>
+                    <td>Low (Brute force)</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Vorticity-Based AMR</td>
+                    <td>High</td>
+                    <td><strong>Yes</strong> (Manual thresholds)</td>
+                </tr>
+                <tr>
+                    <td><strong>DBA-Based AMR</strong></td>
+                    <td><strong>Highest (up to 70% reduction)</strong></td>
+                    <td><strong>No</strong> (Fully automated)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>What's Next?</h2>
+        <p>This strategy is modular and scalable, meaning it can be plugged into almost any PDE solver. We implemented ours in <strong>OpenFOAM</strong> using a Python interface (via pybind11) to handle the machine learning components. Next steps involve extending this to <strong>compressible flows</strong>, <strong>fluid-structure interactions</strong> or any other problem of interest.</p>
+        
+        <p>By making AMR autonomous and physics-informed, we hope to make high-fidelity simulations accessible for everyone, not just those with the biggest supercomputers!</p>
+    </section>
+
+    <hr>
+
+</body>
+<footer> If you are interested, you can reach out to me at <a href="mailto:gauravkumar463@gmail.com" style="color: #0066cc; text-decoration: none;">gauravkumar463@gmail.com</a> for a copy of the article or to share your comment.</footer>
+</html>
